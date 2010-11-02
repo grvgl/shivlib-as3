@@ -1,7 +1,6 @@
 ﻿package com.shivolve.shivlib.as3.loading
 {
-	import com.shivolve.shivlib.events.SEventDispatcher;
-	import flash.events.Event;
+	import flash.events.*;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
@@ -9,10 +8,11 @@
 	 * ...
 	 * @author Gaurav Goel
 	 */
-	public class SLoader extends SEventDispatcher
+	public class SLoader extends EventDispatcher
 	{
 		private var request:URLRequest = null;
 		private var loader:URLLoader = null;
+		
 		public function SLoader() 
 		{
 			this.init();
@@ -56,7 +56,7 @@
 		{
 			var configObj:Object = new Object();
 			configObj.id = assetID;
-			this.wLoader.add(filePath, configObj);
+			this.sLoader.add(filePath, configObj);
 		}
 		
 		private functin onComplete(e:Event):void 
