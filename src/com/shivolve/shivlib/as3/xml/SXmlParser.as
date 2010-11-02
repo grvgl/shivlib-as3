@@ -45,7 +45,7 @@
 		{
 			this.xmlFileName = pathToFile.substr((pathToFile.lastIndexOf("/")+1), pathToFile.length);
 			this.referenceId = referenceId;
-			SParser.loader.addEventListener(BulkProgressEvent.PROGRESS,this.onProgress);
+			SParser.loader.addEventListener(SProgressEvent.PROGRESS,this.onProgress);
 			SParser.loader.addEventListener(SLoaderEvent.LOAD_COMPLETE, onComplete);
 			SParser.loader.add(pathToFile, "xml");
 			SParser.loader.start();
