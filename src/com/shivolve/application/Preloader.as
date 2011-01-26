@@ -1,4 +1,4 @@
-﻿package com.shivolve.exampleproject
+﻿package com.shivolve.application
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;

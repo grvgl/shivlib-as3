@@ -1,4 +1,4 @@
-﻿package com.shivolve.exampleproject
+﻿package com.shivolve.application
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
