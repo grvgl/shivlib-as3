@@ -6,7 +6,7 @@
 	import flash.events.ProgressEvent;
 	import flash.utils.getDefinitionByName;
 	
-	import com.shivolve.exampleproject.Main;
+	import com.shivolve.application.Main;
 	
 	/**
 	 * @file This should be the document class of the FLA.
@@ -18,7 +18,7 @@
 		 * Below line declares a variable of type Main because Main is not being compiled into the swf file. 
 		 * Just because a class is imported does not mean it gets compiled. 
 		 * Flash checks for any usage of the class and only compile it if it finds any. 
-		 * It does this so that you wont have extra code does not get compiled that never gets used.
+		 * It does this so that compiled file won't have extra compiled code that never gets used.
 		 */
 		private var mainClassReference:Main;
 		
@@ -50,7 +50,7 @@
 			hideLoader();
 			stop();
 			loaderInfo.removeEventListener(ProgressEvent.PROGRESS, progress);
-			mainClass = getDefinitionByName("com.shivolve.exampleproject.Main") as Class;
+			mainClass = getDefinitionByName("com.shivolve.application.Main") as Class;
 			addChild(new mainClass() as DisplayObject);
 		}
 		
