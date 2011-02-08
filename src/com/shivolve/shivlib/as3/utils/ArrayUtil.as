@@ -21,10 +21,10 @@
 		{
 			for (var i:int = 0; i < a.length; i++) 
 			{
-				var randomIdx:int = Math.floor(Math.random() * a.length);
-				var temp:Object = a[i];
-				a[i] = array[a];
-				a[randomIdx] = temp;
+				var randomIndex:int = Math.floor(Math.random() * a.length);
+				var temp:* = a[i];
+				a[i] = a[randomIndex];
+				a[randomIndex] = temp;
 			}
 		}
 
@@ -37,7 +37,7 @@
 
 		public static function removeElement(a:Array, element:Object):Boolean 
 		{
-			return this.removeElementAt(a,a.indexOf(element));
+			return removeElementAt(a,a.indexOf(element));
 		}
 
 		/**
@@ -97,6 +97,32 @@
 			a.push(c);
 			return a;
 		}
-
+		
+		/**
+		 * Removes duplicate elements
+		 * @param	a
+		 * @return	Array
+		 */
+		public static function removeDuplicateElements(a:Array):Array
+		{
+			var i:int;
+			var j:int;
+			var e:*;
+			for (i = 0;i < a.length; i++) 
+			{
+				e = a[i];
+				for (j = 0;j < a.length; j++) 
+				{
+					if (a[j] == a[i]) 
+					{
+						if (j != i)
+						{
+							a.splice(j, 1);
+						}
+					}
+				}
+			} 
+			return a;
+		}
 	}
 }
