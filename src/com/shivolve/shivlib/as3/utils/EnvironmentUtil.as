@@ -2,7 +2,10 @@ package com.shivolve.shivlib.as3.utils
 {
 	import flash.display.DisplayObject;
 	import flash.system.Capabilities;
-	
+	/**
+	* 
+	* @author Gaurav Goel
+	*/	
 	public class EnvironmentUtil 
 	{
 		
