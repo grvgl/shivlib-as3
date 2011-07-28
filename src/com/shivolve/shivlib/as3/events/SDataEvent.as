@@ -11,7 +11,7 @@
 	
 	public class SDataEvent extends Event 
 	{
-		private var _sessionVO:SessionVO=null;
+		//private var _sessionVO:SessionVO=null;
 		// This Event will be dispatched when data is ready.
 		public static const DATA_READY_EVENT:String='dataReadyEvent';
 		// This Event will be dispatched when use starts input data.
@@ -54,7 +54,7 @@
 			}
 			return new SDataEvent (eventType);
 		}
-
+/*
 		public function get sessionVO():SessionVO
 		{
 			return _sessionVO;
@@ -64,6 +64,6 @@
 		{
 			_sessionVO = v;
 		}
-
+*/
 	}
 }
