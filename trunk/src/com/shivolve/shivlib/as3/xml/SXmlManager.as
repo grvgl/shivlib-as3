@@ -1,9 +1,10 @@
 ﻿package com.shivolve.shivlib.as3.xml
 {
 	
+	import com.shivolve.shivlib.as3.events.SDataEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import com.shivolve.utils.loading.SLoader;
+	import com.shivolve.shivlib.as3.loading.SLoader;
 	
 	
 	/**
@@ -21,7 +22,7 @@
 		private var xmlObj:XML = null;	// Store XML output
 		private var _unparsedXML:XML = null;	// Store raw XML sent by SBaseParser
 		
-		private var objSBaseParser:SBaseParser = null;	// Declare SBaseParser variable
+		private var objSBaseParser:SXmlParser = null;	// Declare SXmlParser variable
 		
 		private static var intXMLCounter:int = 0;
 		
@@ -36,8 +37,9 @@
 		
 		private function init():void
 		{
-			SXMLManager.intXMLCounter++;
-			this.sLoader = new SLoader("XML_Loader_" + String(SXMLManager.intXMLCounter));						
+			SXmlManager.intXMLCounter++;
+			this.sLoader = new SLoader();						
+			//this.sLoader = new SLoader("XML_Loader_" + String(SXmlManager.intXMLCounter));						
 		}
 		
 		/**
@@ -46,7 +48,7 @@
 	
 		public function dispose():void 
 		{
-			this.sLoader.dispose();
+			this.sLoader.destroy();
 			this.xmlObj = null;
 		}
 		
@@ -70,9 +72,10 @@
 		
 		private function loadXML():void
 		{
-			this.sLoader.add(this.xmlPath,{id: "xml"});
-			this.sLoader.addEventListener(SLoader.SLOADER_COMPLETE, this.onXMLLoad);
-			this.sLoader.start();
+			this.sLoader.add(this.xmlPath, "xml");
+			this.sLoader.addEventListener(Event.COMPLETE, this.onXMLLoad);
+			//this.sLoader.addEventListener(SLoader.SLOADER_COMPLETE, this.onXMLLoad);
+			this.sLoader.load();
 		}
 		
 		/**
@@ -82,6 +85,7 @@
 		
 		private function onXMLLoad(e:Event):void
 		{
+			trace("SXmlManager#onXMLLoad()"+e.target.getXML("xml"));
 			// The below CustomEvent has to be changed once the SDataEvent package is ready.
 			
 			try
@@ -101,26 +105,29 @@
 		 */
 		private function createSBaseParser(xmlObj:XML):void
 		{
-			this.objSBaseParser = new SBaseParser(this,xmlObj);
+			this.objSBaseParser = new SXmlParser();
+			//this.objSBaseParser = new SXmlParser(this,xmlObj);
 		}
 		
 		/**
 		 *  Dispatches sessionVO
 		 * @param	sessionVO
 		 */
-		public function onSessionDataParse(sessionVO:SessionVO):void
+		public function onSessionDataParse():void
+		//public function onSessionDataParse(sessionVO:SessionVO):void
 		{
-			var dataEvent:SDataEvents = new SDataEvents(SDataEvents.DATA_READY_EVENT);
-			dataEvent.sessionVO = sessionVO;
-			this.dispatchEvent(dataEvent);
+			var dataEvent:SDataEvent = new SDataEvent(SDataEvent.DATA_READY_EVENT);
+			//dataEvent.sessionVO = sessionVO;
+			//this.dispatchEvent(dataEvent);
 		}
 		
 
-		public function onAssetDataParse(assetVO:ProductAssetVO):void
+		public function onAssetDataParse():void
+		//public function onAssetDataParse(assetVO:ProductAssetVO):void
 		{
-			var dataEvent:SDataEvents = new SDataEvents(SDataEvents.DATA_READY_EVENT);
-			dataEvent.assetVO = assetVO;
-			this.dispatchEvent(dataEvent);
+			var dataEvent:SDataEvent = new SDataEvent(SDataEvent.DATA_READY_EVENT);
+			//dataEvent.assetVO = assetVO;
+			//this.dispatchEvent(dataEvent);
 		}		
 		
 		/**
@@ -129,7 +136,7 @@
 		 */
 		public function onRawXML(xml:XML):void
 		{
-			var dataEvent:SDataEvents = new SDataEvents(SDataEvents.DATA_READY_EVENT);
+			var dataEvent:SDataEvent = new SDataEvent(SDataEvent.DATA_READY_EVENT);
 			this.unparsedXML = xml;
 			this.dispatchEvent(dataEvent);
 		}

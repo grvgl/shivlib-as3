@@ -1,6 +1,7 @@
 ﻿package com.shivolve.shivlib.as3.xml
 {
 
+	import com.shivolve.shivlib.as3.loading.SLoader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
@@ -34,11 +35,12 @@
 		 */
 		protected function parseXML(xmlObj:XML):void { }
 		
-		public function load(pathToFile:String, referenceId:String=null):void 
+		public function add(pathToFile:String, referenceId:String=null):void 
 		{
-			this.xmlFileName = pathToFile.substr((pathToFile.lastIndexOf("/")+1), pathToFile.length);
-			this.loader.addEventListener(BulkProgressEvent.PROGRESS,this.onProgress);
-			this.loader.addEventListener(SLoaderEvent.LOAD_COMPLETE, onComplete);
+			//this.xmlFileName = pathToFile.substr((pathToFile.lastIndexOf("/")+1), pathToFile.length);
+			this.xmlFileName = pathToFile;
+			this.loader.addEventListener(ProgressEvent.PROGRESS,this.onProgress);
+			this.loader.addEventListener(Event.COMPLETE, onComplete);
 			this.loader.add(pathToFile, "xml");
 			this.loader.start();
 		}

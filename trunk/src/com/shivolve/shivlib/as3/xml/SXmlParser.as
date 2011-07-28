@@ -1,8 +1,10 @@
 ﻿package com.shivolve.shivlib.as3.xml
 {
 
+	import com.shivolve.shivlib.as3.loading.SLoader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.ProgressEvent;
 	
 	import com.shivolve.shivlib.as3.events.SDataEvent;
 	import com.shivolve.shivlib.as3.xml.SXmlParser;
@@ -28,10 +30,10 @@
 		 */
 		private function init():void
 		{
-			if (!SParser.loader)
+			if (!SXmlParser.loader)
 			{
-				SParser.loader = new SLoader();
-				SParser.loader.loaderName = "XML_Loader";
+				SXmlParser.loader = new SLoader();
+				SXmlParser.loader.loaderName = "XML_Loader";
 			}
 		}
 		
@@ -45,13 +47,13 @@
 		{
 			this.xmlFileName = pathToFile.substr((pathToFile.lastIndexOf("/")+1), pathToFile.length);
 			this.referenceId = referenceId;
-			SParser.loader.addEventListener(SProgressEvent.PROGRESS,this.onProgress);
-			SParser.loader.addEventListener(SLoaderEvent.LOAD_COMPLETE, onComplete);
-			SParser.loader.add(pathToFile, "xml");
-			SParser.loader.start();
+			SXmlParser.loader.addEventListener(ProgressEvent.PROGRESS,this.onProgress);
+			SXmlParser.loader.addEventListener(Event.COMPLETE, onComplete);
+			SXmlParser.loader.add(pathToFile, "xml");
+			SXmlParser.loader.load();
 		}
 
-		private function onProgress(e:BulkProgressEvent):void 
+		private function onProgress(e:Event):void 
 		{ 
 			this.errorMessage = "Had problem loading the XML File." + "\n" + e;
 		}
@@ -63,25 +65,26 @@
 		 */
 		private function onComplete(e:Event):void 
 		{
-			SParser.loader.removeEventListener(SLoaderEvent.LOAD_COMPLETE, onComplete);
+			SXmlParser.loader.removeEventListener(Event.COMPLETE, onComplete);
+			//SXmlParser.loader.removeEventListener(SLoaderEvent.LOAD_COMPLETE, onComplete);
 			try
 			{
-				var xmlObj:XML = SParser.loader.getXML("xml");
-				SParser.loader.remove("xml");
-				if (validateAssetXml(xmlObj))
+				var xmlObj:XML = SXmlParser.loader.getXML("xml");
+				SXmlParser.loader.remove("xml");
+				if (validateXml(xmlObj))
 				{
 					parseXML(xmlObj);
 				}
 				else
 				{
-					throw new SError();
+					throw new SError("S Error Message");
 				}
 			}
 			catch(e:SError)
 			{
 				this.errorMessage = "Error reading " + this.xmlFileName + ". " + this.errorMessage;
 				trace("Fatal " + this.errorMessage);
-				SLog.log(5, this.errorMessage);
+				//SLog.log(5, this.errorMessage);
 			}
 		}
 		
@@ -159,6 +162,8 @@
 			}
 			return isValidated;
 		}
+		
+	
 		/**
 		 * Validates the text tag inside the reference tag.
 		 * @param	tagName_1_1_Element <tagName_1_1> tag inside the <application> tag in the XML.
@@ -175,7 +180,7 @@
 		 * @param	tagName_2_Element <tagName_2> tag inside the <application> tag in the XML.
 		 * @return  Boolean value indicating whether the XML is as per the standard Tag and Attribute library.
 		 */
-		private function validate_tagName_2_Content(tagName_2_Element:XML):Boolean
+		private function validate_TagName_1_2_Content(tagName_1_2_Element:XML):Boolean
 		{
 			var isValidated:Boolean = true;
 			// Validation code here
@@ -192,20 +197,30 @@
 			// Validation code here
 			return isValidated;
 		}
+		
+		private function validate_tagName_2_Content(tagName_2_Element:XML):Boolean
+		{
+			var isValidated:Boolean = true;
+			// Validation code here
+			return isValidated;
+		}
+		
+		
 		/**
 		 * Dispatches DATA_READY_EVENT with the Asset VO. This method is called by the child class that parses the XML.
 		 * @param	vo Asset VO to be dispatched.
 		 */
-		public function dispatchDataReadyEvent(vo:AssetVO):void 
+		public function dispatchDataReadyEvent():void 
+		//public function dispatchDataReadyEvent(vo:AssetVO):void 
 		{
 			var dataEvent:SDataEvent = new SDataEvent(SDataEvent.DATA_READY_EVENT);
-			dataEvent.assetVO = vo;
+			//dataEvent.assetVO = vo;
 			this.dispatchEvent(dataEvent);
 		}
 				
 		public function dispose():void 
 		{
-			SParser.loader.dispose();
+			SXmlParser.loader.destroy();
 		}	
 	}
 }
