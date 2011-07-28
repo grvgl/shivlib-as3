@@ -112,7 +112,7 @@
 		/**
 		 * Disposes all active timers created.
 		 */
-		public function dispose():void
+		public function destroy():void
 		{
 			this._interval.destroy();
 		}
